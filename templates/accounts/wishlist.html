@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+
+{% block start %}
+<section class="section-content profile padding-y">
+	<div class="card sidebar">
+		<div class="sidebar-item"><a href="{% url 'profile' %}">Profile</a></div>
+		<div class="sidebar-item"><a href="{% url 'orders' %}">Orders</a></div>
+		<div class="sidebar-item"><a href="{% url 'address' %}">Address</a></div>
+		<div class="sidebar-item active"><a href="{% url 'wishlist' %}">Wishlist</a></div>
+		<div class="sidebar-item"><a href="{% url 'logout' %}">Logout</a></div>
+	</div>
+	<div class="container" style="margin: 2.5px;">
+		<div class="row">
+		{% for product in products %}
+			<div class="col-5" style="padding:5px;margin:5px;border: 1px solid rgba(0,0,0,0.1);border-radius: 5px;">
+				<div class="row">
+					<div class="col-3" style="float: left;">
+						<img style="height: 100px;width: 100px;object-fit: contain;" src="/media/{{product.image}}" alt="">
+					</div>
+					<div class="col-8" style="padding: 5px 0 0 5px;">
+						<div class="product title title-dark b" style="font-size: 1.2rem;"><a href="{% url 'getProduct' product.slug %}">{{product.product_name}}</a></div>
+						<div class="price" style="font-size: 15px;color: var(--grey-light);">{{product.price}}</div>
+					</div>
+					<div class="col-1" style="padding: 5px 0 0 0;">
+						<div class="delete" style="cursor: pointer;font-size: 20px;"><a href="{% url 'wishlistRemove' product.uid %}"><i class="fa fa-trash"></i></a></div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+		</div>
+	</div>
+</section>
+{% endblock %}

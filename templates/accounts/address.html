@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+
+{% block start %}
+<section class="section-content profile padding-y">
+	<div class="card sidebar">
+		<div class="sidebar-item"><a href="{% url 'profile' %}">Profile</a></div>
+		<div class="sidebar-item"><a href="{% url 'orders' %}">Orders</a></div>
+		<div class="sidebar-item active"><a href="{% url 'address' %}">Address</a></div>
+		<div class="sidebar-item"><a href="{% url 'wishlist' %}">Wishlist</a></div>
+		<div class="sidebar-item"><a href="{% url 'logout' %}">Logout</a></div>
+	</div>
+	<div class="container" style="margin: 2.5px;">
+		<div class="title" style="font-size: 20px;color: #000;">Manage Addresses</div>
+		<div class="add-btn" style="padding-top: 5px;">+ Add Address</div>
+		<hr>
+		<div class="count">{{count}} Saved Addresses</div>
+		<div class="row">
+			{% for add in address %}
+			<div class="col-5 address-card m-2">
+				<div class="left-div">
+					<div class="name_div d-flex">
+						<div class="name">{{add.name}}</div>
+						<span class="type">{{add.type}}</span>
+					</div>
+					<div class="address">{{add.houseNo}},{{add.roadName}},{{add.landmark}},{{add.city}}</div>
+					<div class="state">{{add.state}} - <span class="pincode">{{add.pincode}}</span></div>
+					<div class="mobile">{{add.mobile}}</div>
+				</div>
+				<div class="right-div d-flex flex-column">
+					<button class="btn btn-light" style="margin: 2.5px;">Edit</button>
+					<button class="btn btn-danger" style="margin: 2.5px;">Delete</button>
+				</div>
+			</div>
+			{% endfor %}
+			
+		</div>
+	</div>
+</section>
+{% endblock %}

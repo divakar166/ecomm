@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Ecomm Django Template</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/media/images/favicon.ico">
+    <!-- jQuery -->
+    <script src="/media/js/jquery.min.js" type="text/javascript"></script>
+    <!-- Bootstrap4 files-->
+    <script src="/media/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <link href="/media/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <!-- Font awesome 5 -->
+    <link href="/media/fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
+    <!-- custom style -->
+    <link href="/media/css/ui.css" rel="stylesheet" type="text/css"/>
+    <link href="/media/css/responsive.css" rel="stylesheet" />
+    <!-- custom javascript -->
+    <script src="/media/js/script.js" type="text/javascript"></script>
+    <style>
+			.dropdown-menu{
+				top: 15px !important;
+				left: -45px !important;
+				padding: 0 !important;
+				text-align: center;
+				min-width: 7.5rem !important;
+			}
+			.dropdown-item{
+				padding: 0 1rem !important;
+			}
+			.dropdown-item:active{
+				background-color: #fff !important;
+			}
+			.section-content.profile{
+				display: flex !important;
+				justify-content: space-between;
+			}
+			.sidebar{
+				width: 250px;
+				padding: 10px ;
+				margin: 0 30px;
+			}
+			.sidebar-item{
+				padding: 5px;
+				font-size: 1.2rem;
+				cursor: pointer;
+				height: 50px;
+				margin: 5px;
+			}
+			.sidebar-item:hover{
+				color: #0000ff;
+			}
+			.sidebar-item.active{
+				color: #0000ff;
+			}
+			.sidebar-item a{
+				color: var(--grey-light);
+			}
+			a{
+				color: #000;
+			}
+			a:hover{
+				color: #0000ff;
+			}
+			.address-card{
+				display: flex;
+				justify-content: space-between;
+				border: 1px solid rgba(0,0,0,0.1);
+				border-radius: 10px;
+				padding: 5px;
+			}
+			.address-card .name{
+				font-size: 20px;
+			}
+			.address-card .type{
+				background-color: rgba(0,0,0,.1);
+				color: #00000080;
+				border-radius: 5px;
+				font-size: 12px;
+				padding: 2px 5px;
+				height: 20px;
+				margin: 8px 0 0 5px;
+			}
+			.count{
+				background-color: rgba(0,0,0,.1);
+				color: #00000080;
+				border-radius: 5px;
+				font-size: 12px;
+				width: 120px;
+				display: flex;
+				justify-content: center;
+				height: 20px;
+				margin: 5px;
+			}
+    </style>
+</head>
+<body>
+
+	<header class="section-header">
+		<section class="header-main border-bottom">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col-lg-2 col-4">
+								<div class="brand-wrap">
+										<a href="{% url 'index' %}">
+												<img class="logo" src="/media/images/logo.png">
+										</a>
+								</div> <!-- brand-wrap.// -->
+						</div>
+						<div class="col-lg-6 col-sm-12">
+								<form action="#" class="search">
+										<div class="input-group w-100">
+												<input type="text" class="form-control" placeholder="Search">
+												<div class="input-group-append">
+														<button class="btn btn-primary" type="submit">
+																<i class="fa fa-search"></i>
+														</button>
+												</div>
+										</div>
+								</form> <!-- search-wrap .end// -->
+						</div> <!-- col.// -->
+						<div class="col-lg-4 col-sm-6 col-8">
+								<div class="widgets-wrap float-md-right">
+										<div class="widget-header  mr-3">
+												<a href="{% url 'cart' %}" class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></a>
+												<span class="badge badge-pill badge-danger notify">{{ cartItemTotal }}</span>
+										</div>
+										<div class="widget-header icontext" style="cursor: pointer;">
+												{% if user.is_authenticated %}
+												<div class="dropdown icon icon-sm rounded-circle border">
+													<i class="fa fa-user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+													<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+														<a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+														<a class="dropdown-item" href="{% url 'orders' %}">Orders</a>
+														<a class="dropdown-item" href="{% url 'wishlist' %}">Wishlist</a>
+														<a class="dropdown-item" href="{% url 'address' %}">Address</a>
+														<a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
+													</div>       
+												</div>
+												<div class="text">
+														<span class="text-muted">Welcome!</span>
+														<div><b>{{user.first_name}} {{user.last_name}}</b></div>
+														{% else %}
+														<div> 
+																<a href="{% url 'login' %}">Sign in</a> |  
+																<a href="{% url 'register' %}"> Register</a>
+														</div>
+														{% endif %}
+												</div>
+										</div>
+								</div> <!-- widgets-wrap.// -->
+						</div> <!-- col.// -->
+					</div> <!-- row.// -->
+				</div> <!-- container.// -->
+		</section> <!-- header-main .// -->
+	</header>
+
+	{% block start %}
+
+	{% endblock %}
+</body>
+</html>

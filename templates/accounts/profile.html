@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+
+{% block start %}
+<section class="section-content profile padding-y">
+	<div class="card sidebar">
+		<div class="sidebar-item active"><a href="{% url 'profile' %}">Profile</a></div>
+		<div class="sidebar-item"><a href="{% url 'orders' %}">Orders</a></div>
+		<div class="sidebar-item"><a href="{% url 'address' %}">Address</a></div>
+		<div class="sidebar-item"><a href="{% url 'wishlist' %}">Wishlist</a></div>
+		<div class="sidebar-item"><a href="{% url 'logout' %}">Logout</a></div>
+	</div>
+	<div class="container" style="margin: 2.5px;">
+		<div class="personal_div">
+			<div class="personal d-flex">
+				<div class="title" style="font-size: 20px;padding-right: 10px;">Personal Information</div>
+				<span style="color: #0000ff;padding-top: 5px;cursor: pointer;">Edit</span>
+			</div>
+			<div class="row" style="padding-top: 10px;">
+				<div class="col-3">
+					<input type="text" value="{{user.first_name}}" readonly class="form-control">
+				</div>
+				<div class="col-3">
+					<input type="text" value="{{user.last_name}}" class="form-control" readonly>
+				</div>
+				<div class="col-3">
+					<input type="submit" hidden class="btn btn-primary" value="Save">
+				</div>
+			</div>
+			<div class="gender_div" style="padding: 10px 0;">
+				<div class="title">Your Gender</div>
+			</div>
+			<div class="row">
+				<label for="male" style="padding: 0 10px;">
+					<input type="radio" name="gender" readonly id="Male" disabled {% if userData.gender == 'Male' %} checked {% else %} {%endif%}>
+					<span style="font-size: 16px;">Male</span>
+				</label>
+				<label for="female" style="padding: 0 10px;">
+					<input type="radio" name="gender" readonly id="Female" disabled {% if userData.gender == 'Female' %} checked {% else %} {%endif%}>
+					<span style="font-size: 16px;">Female</span>
+				</label>
+			</div>
+		</div>
+		<div class="email_div" style="padding-bottom: 10px;">
+			<div class="email d-flex">
+				<div class="title" style="font-size: 18px;padding-right: 10px;">Email Address</div>
+				<span style="color: #0000ff;padding-top: 3px;cursor: pointer;">Edit</span>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<input type="email" value="{{userData.user}}" readonly disabled class="form-control">
+				</div>
+				<div class="col-3">
+					<input type="submit" class="btn btn-primary" hidden value="Save">
+				</div>
+			</div>
+		</div>
+		<div class="mobile_div">
+			<div class="mobile d-flex">
+				<div class="title" style="font-size: 18px;padding-right: 10px;">Mobile Number</div>
+				<span style="color: #0000ff;padding-top: 3px;cursor: pointer;">Edit</span>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<input type="text" value="{{userData.mobile}}" readonly disabled class="form-control">
+				</div>
+				<div class="col-3">
+					<input type="submit" class="btn btn-primary" hidden value="Save">
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</section>
+{% endblock %}

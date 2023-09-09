@@ -1,0 +1,175 @@
+{% extends 'base/base.html' %}
+
+{% block start %}
+{% if cart %}
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-9">
+                <div class="card">
+                    <table class="table table-borderless table-shopping-cart">
+                    <thead class="text-muted">
+                        <tr class="small text-uppercase">
+                            <th scope="col">Product</th>
+                            <th scope="col" width="120">Quantity</th>
+                            <th scope="col" width="120">Price</th>
+                            <th scope="col" class="text-right" width="200"> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if cartitems.count %}
+                        {% for cart_item in cartitems %}
+                        <tr>
+                            <td>
+                                <figure class="itemside">
+                                    <div class="aside" style="height: 100px;width: 80px;"><img style="height: 100px;object-fit: contain;" src="/media/{{cart_item.product.image}}" class="img-sm"></div>
+                                    <figcaption class="info">
+                                        <a href="{% url 'getProduct' cart_item.product.slug %}" class="title text-dark b" style="font-size: 20px;">{{cart_item.product}}</a>
+                                        <small class="text-muted">Model - {{ cart_item.product.model }}</small>
+                                    </figcaption>
+                                </figure>
+                            </td>
+                            <td> 
+                                <form action="POST" id="{{cart_item.product.slug}}">
+                                    {% csrf_token %}
+                                    <div class="form-group col-md flex-grow-0">
+                                        <div class="input-group mb-3 input-spinner">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-light" type="button" id="button-plus" onclick="addQuantityVal('{{cart_item.uid}}','{{cart_item.product.slug}}')"> + </button>
+                                        </div>
+                                        <input type="text" name="quantity" id="{{cart_item.uid}}" class="form-control" value="{{cart_item.quantity}}">
+                                        <input type="hidden" name="cartItemID" value="{{cart_item.uid}}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-light" type="button" id="button-minus" onclick="subQuantityVal('{{cart_item.uid}}','{{cart_item.product.slug}}')"> − </button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                            <td> 
+                                <div class="price-wrap"> 
+                                    <var class="price">₹{{cart_item.product.price}}</var>
+                                    {% if cart_item.quantity > 1 %} 
+                                        <small class="text-muted"> ${{cart_item.product.price}} each </small> 
+                                    {% endif %}
+                                </div> <!-- price-wrap .// -->
+                            </td>
+                            <td class="text-right"> 
+                            <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a> 
+                            <a href="{% url 'remove_cart' cart_item.uid %}" class="btn btn-light"> Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                    </table>
+    
+                    <div class="card-body border-top">
+                        <a href="/" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
+                    </div>	
+                </div> <!-- card.// -->
+    
+                <div class="alert alert-success mt-3">
+                    <p class="icontext"><i class="icon text-success fa fa-truck"></i> Free Delivery within 4-5 days</p>
+                </div>
+    
+            </main> <!-- col.// -->
+            <aside class="col-md-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                    <form method="POST">
+                        {% include 'base/alert.html' %}
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Have coupon?</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="coupon" placeholder="Coupon code">
+                                <span class="input-group-append"> 
+                                    <button type="submit" class="btn btn-primary">Apply</button>
+                                </span>
+                            </div>
+                        </div>
+                        {% if cart.coupon %}
+                        <a href="{% url 'removeCoupon' cart.uid %}" class="btn btn-success">{{ cart.coupon.coupon_code }}</a>
+                        {% endif %}
+                    </form>
+                    </div> <!-- card-body.// -->
+                </div>  <!-- card .// -->
+                <div class="card">
+                    <div class="card-body">
+                            <dl class="dlist-align">
+                            <dt>Price:</dt>
+                            <dd class="text-right">₹{{ cart.cart_total }}</dd>
+                            </dl>
+                            {% if cart.coupon %}
+                                <dl class="dlist-align">
+                                    <dt>Discount:</dt>
+                                    <dd class="text-right">₹{{cart.coupon.discount_price}}</dd>
+                                </dl>
+                            {% else %}
+                                <dl class="dlist-align">
+                                    <dt>Discount:</dt>
+                                    <dd class="text-right">0</dd>
+                                </dl>
+                            {% endif %}
+                            <dl class="dlist-align">
+                            <dt>Total price:</dt>
+                            <dd class="text-right  h5"><strong>₹{{cart.finalTotal}}</strong></dd>
+                            </dl>
+                            <hr>
+                            <p class="text-center mb-3">
+                                <a href="#" class="btn btn-primary float-md"> Make Purchase <i class="fa fa-chevron-right"></i> </a>
+                        
+                            </p>
+                            
+                    </div> <!-- card-body.// -->
+                </div>  <!-- card .// -->
+            </aside> <!-- col.// -->
+        </div>
+        <div id="url" style="display: none;">{% url 'updateCart' %}</div>
+    </div> <!-- container .//  -->
+</section>
+<script>
+    function submitForm(id){
+        var formData = $('#'+id).serialize()
+        console.log(formData)
+        $.ajax({ 
+            url: $('#url').text(),
+            type: "POST",
+            dataType: "json",
+            data: formData,
+            cache: false
+        }).done(function(data){
+            console.log(data)
+        })
+        location.reload(true)
+    }
+    function addQuantityVal(id,name){
+        var value = $('#'+id).val()
+        $('#'+id).val(parseInt(value)+1)
+        submitForm(name)
+    }
+    function subQuantityVal(id,name){
+        let val = $('#'+id).val()
+        if (parseInt(val) > 1){
+            $('#'+id).val(parseInt(val)-1)
+            submitForm(name)
+        } 
+    }
+</script>
+{% else %}
+<section class="section-content padding-y">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<p>Your cart is empty!</p>
+				<a href="/" class="btn btn-primary">Continue Shopping</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+{% endif %}
+{% endblock %}
