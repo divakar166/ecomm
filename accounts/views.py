@@ -191,7 +191,7 @@ def address(request):
     address = []
     for add in addressArray:
         address.append(add)
-    context = {'address':address}
+    context = {'address':address,'count':addressArray.count()}
     user = Profile.objects.get(user=user)
     context['cartItemTotal'] = user.cartItemTotal()
     return render(request,'accounts/address.html',context=context)

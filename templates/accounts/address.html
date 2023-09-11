@@ -11,10 +11,12 @@
 	</div>
 	<div class="container" style="margin: 2.5px;">
 		<div class="title" style="font-size: 20px;color: #000;">Manage Addresses</div>
-		<div class="add-btn" style="padding-top: 5px;">+ Add Address</div>
+		<button class="add-btn btn btn-primary" style="padding-top: 5px;">+ Add Address</button>
 		<hr>
+		{% if count != 0 %}
 		<div class="count">{{count}} Saved Addresses</div>
-		<div class="row">
+		{% endif %}
+		<div class="row address_div hide">
 			{% for add in address %}
 			<div class="col-5 address-card m-2">
 				<div class="left-div">
@@ -32,8 +34,66 @@
 				</div>
 			</div>
 			{% endfor %}
-			
+		</div>
+		<div class="add_address_div">
+			<form method="post">
+				{% csrf_token %}
+				<div class="row form-group">
+					<div class="col-4">
+						<input type="text" name="name" placeholder="Full Name" class="form-control">
+					</div>
+				</div>
+				<div class="form-group row mobile_div">
+					<div class="col-4">
+						<input type="text" name="mobile" placeholder="Mobile Number" class="form-control">
+					</div>
+					<div class="col-4">
+						<input type="hidden" name="altMobile" class="form-control" placeholder="Altername Mobile">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-4">
+						<select name="state" id="state" class="form-control">
+							<option value="0" class="form-control">Select State</option>
+							<option value="Uttar Pradesh" class="form-control">Uttar Pradesh</option>
+						</select>
+					</div>
+					<div class="col-2">
+						<input type="number" name="pincode" maxlength="6" placeholder="Pincode" class="form-control">
+					</div>
+					<div class="col-4">
+						<input type="text" name="city" placeholder="City" class="form-control">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-6">
+						<input type="text" name="houseNo" class="form-control" placeholder="House No./Street No.">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-6">
+						<input type="text" name="roadName" class="form-control" placeholder="Road name">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-6">
+						<input type="text" name="landmark" class="form-control" placeholder="Landmark">
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-6">
+						<input class="btn btn-light" name="type" value="Home" id="">Home &nbsp;
+						<input class="btn btn-light" name="type" value="Work">Work
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </section>
+<script>
+	$('.add-btn').on('click',function(){
+		$('.add_address_div').toggleClass('hide');
+		$('.address_div').toggleClass('hide')
+	})
+</script>
 {% endblock %}
