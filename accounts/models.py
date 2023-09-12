@@ -24,13 +24,13 @@ class Address(BaseModel):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='address')
     name = models.CharField(max_length=100)
     mobile = models.IntegerField()
-    altMobile = models.IntegerField(null=True,blank=True)
     pincode = models.IntegerField()
-    state = models.CharField(max_length=30)
+    locality = models.CharField(max_length=100)
+    area = models.CharField(max_length=100)
     city = models.CharField(max_length=30)
-    houseNo = models.CharField(max_length=50)
-    roadName = models.CharField(max_length=100)
-    landmark = models.CharField(max_length=50)
+    state = models.CharField(max_length=30)
+    landmark = models.CharField(max_length=50,null=True,blank=True)
+    altMobile = models.IntegerField(null=True,blank=True)
     type = models.CharField(max_length=4)
 
 
