@@ -11,37 +11,36 @@
 	</div>
 	<div class="container" style="margin: 2.5px;">
 		<div class="title" style="font-size: 20px;color: #000;">Manage Addresses</div>
-		<button class="add-btn btn btn-primary" style="padding-top: 5px;">+ Add Address</button>
-		<hr>
-		{% if count != 0 %}
-		<div class="count">{{count}} Saved Addresses</div>
-		{% endif %}
-		<!-- <div class="row address_div">
-			{% for add in address %}
-			<div class="col-5 address-card m-2">
-				<div class="left-div">
-					<div class="name_div d-flex">
-						<div class="name">{{add.name}}</div>
-						<span class="type">{{add.type}}</span>
+		<hr style="margin: .5rem 0;">
+		<button class="add-btn btn btn-primary" style="margin: 5px 0;">+ Add Address</button>
+		<div class="form-div">
+			<form method="post" style="width: 80%;">
+				<div class="row">
+					<div class="form-group col">
+						<label for="name">Name</label>
+						<input type="text" name="name" placeholder="Full name" class="form-control">
 					</div>
-					<div class="address">{{add.houseNo}},{{add.roadName}},{{add.landmark}},{{add.city}}</div>
-					<div class="state">{{add.state}} - <span class="pincode">{{add.pincode}}</span></div>
-					<div class="mobile">{{add.mobile}}</div>
+					<div class="form-group col">
+						<label for="mobile">Mobile Number</label>
+						<input type="text" name="mobile" placeholder="10 digit Mobile Number" class="form-control">
+					</div>
 				</div>
-				<div class="right-div d-flex flex-column">
-					<button class="btn btn-light" style="margin: 2.5px;">Edit</button>
-					<button class="btn btn-danger" style="margin: 2.5px;">Delete</button>
-				</div>
-			</div>
-			{% endfor %}
-		</div> -->
+			</form>
+		</div>
 		{% for add in address %}
-			<div class="card">
-				<div class="card-header">{{add.type}}</div>
-				<div class="card-body">
-					<p>{{add.name}}</p>
-					<p>{{add.mobile}}</p>
-					<p>{{add.area}},{{add.Landmark}},{{add.city}},{{add.state}} - {{add.pincode}}</p>
+			<div class="card border-dark">
+				<div class="row no-gutters">
+					<div class="col">
+						<div class="card-body">
+							<h5 class="card-title">{{add.name}}</h5>
+							<p class="card-subtitle text-muted">{{add.type}}</p>
+							<p class="card-text">{{add.area}}{% if add.Landmark %},{{add.Landmark}}{% endif %},{{add.city}},{{add.state}} - {{add.pincode}} <br> {{add.mobile}}</p>
+						</div>
+					</div>
+					<div class="col" style="display: flex;justify-content: center;align-items: flex-end;flex-direction: column;margin-right: 10px;">
+						<button class="btn btn-light" style="margin: 2px;">Edit</button>
+						<button class="btn btn-danger" style="margin: 2px;">Delete</button>
+					</div>
 				</div>
 			</div>
 		{% endfor %}

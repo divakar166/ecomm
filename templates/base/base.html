@@ -46,31 +46,30 @@
 						</div> <!-- col.// -->
 						<div class="col-lg-4 col-sm-6 col-8">
 								<div class="widgets-wrap float-md-right">
-										<div class="widget-header  mr-3">
+										<div class="widget-header mr-3">
 												<a href="{% url 'cart' %}" class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></a>
 												<span class="badge badge-pill badge-danger notify">{{ cartItemTotal }}</span>
 										</div>
 										<div class="widget-header icontext" style="cursor: pointer;">
 												{% if user.is_authenticated %}
-												<div class="dropdown icon icon-sm rounded-circle border">
-													<i class="fa fa-user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-													<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-														<a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
-														<a class="dropdown-item" href="{% url 'orders' %}">Orders</a>
-														<a class="dropdown-item" href="{% url 'wishlist' %}">Wishlist</a>
-														<a class="dropdown-item" href="{% url 'address' %}">Address</a>
-														<a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
-													</div>       
-												</div>
-												<div class="text">
-														<span class="text-muted">Welcome!</span>
-														<div><b>{{user.first_name}} {{user.last_name}}</b></div>
-														{% else %}
-														<div> 
-																<a href="{% url 'login' %}">Sign in</a> |  
-																<a href="{% url 'register' %}"> Register</a>
-														</div>
-														{% endif %}
+												<div class="text profile_div">
+													<div class="dropdown d-flex">
+														<i class="fas fa-user"></i>&nbsp;
+														<div class="title" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.first_name}}</div>
+														<div class="dropmenu hide" aria-labelledby="dropdownMenuButton" >
+															<a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+															<a class="dropdown-item" href="{% url 'orders' %}">Orders</a>
+															<a class="dropdown-item" href="{% url 'wishlist' %}">Wishlist</a>
+															<a class="dropdown-item" href="{% url 'address' %}">Address</a>
+															<a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
+														</div> 
+													</div>
+													{% else %}
+													<div> 
+															<a href="{% url 'login' %}">Sign in</a> |  
+															<a href="{% url 'register' %}"> Register</a>
+													</div>
+													{% endif %}
 												</div>
 										</div>
 								</div> <!-- widgets-wrap.// -->
