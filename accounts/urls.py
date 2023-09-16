@@ -16,6 +16,7 @@ urlpatterns = [
     path('addItemInWishlist/<uid>/',addItemInWishlist,name='addItemInWishlist'),
     path('myaccount/',myaccount,name='myaccount'),
     path('address/',address,name='address'),
+    path('deleteAddress/<uid>/',deleteAddress,name='deleteAddress'),
     path('profile/',profile,name='profile'),
     path('orders/',orders,name='orders'),
     path('logout/',logout,name='logout')

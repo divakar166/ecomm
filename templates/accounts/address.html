@@ -13,59 +13,79 @@
 		<div class="title" style="font-size: 20px;color: #000;">Manage Addresses</div>
 		<hr style="margin: .5rem 0;">
 		<button class="add_btn btn btn-primary" style="margin: 5px 0;">+ Add Address</button>
-		<div class="form_div hide" style="width:80%;border: 1px solid rgba(0,0,0,0.1);padding: 5px;margin: 5px 0;">
+		<div class="form_div hide" style="width:80%;border: 1px solid rgba(0,0,0,0.1);padding: 5px 10px;margin: 5px 0;">
 			<p class="b" style="font-size: 18px;">Add Address</p>
-			<form method="post">
+			<form method="post" onsubmit="return validateAddressForm()">
 				{% csrf_token %}
 				<div class="row">
 					<div class="form-group col">
 						<label for="name">Name</label>
-						<input type="text" name="name" placeholder="Full name" class="form-control">
+						<input type="text" name="name" id="name" placeholder="Full name" class="form-control">
 					</div>
 					<div class="form-group col">
 						<label for="mobile">Mobile Number</label>
-						<input type="text" name="mobile" placeholder="10 digit Mobile Number" class="form-control">
+						<input type="text" name="mobile" id="mobile" maxlength="10" placeholder="10 digit Mobile Number" class="form-control">
 					</div>
 				</div>
 				<div class="row">
 					<div class="form-group col">
 						<label for="pincode">Pincode</label>
-						<input type="text" name="pincode" maxlength="6" placeholder="Enter pincode" class="form-control">
+						<input type="text" name="pincode" id="pincode" maxlength="6" placeholder="Enter pincode" class="form-control">
 					</div>
 					<div class="form-group col">
 						<label for="locality">Locality</label>
-						<input type="text" name="locality" placeholder="Enter locality" class="form-control">
+						<input type="text" name="locality" id="locality" placeholder="Enter locality" class="form-control">
 					</div>
 				</div>
 				<div class="row">
 					<div class="form-group col">
 						<label for="area">Area</label>
-						<textarea name="area" class="form-control" placeholder="Enter area" cols="30" rows="2"></textarea>
+						<textarea name="area" class="form-control" id="area" placeholder="Enter area" cols="30" rows="2"></textarea>
 					</div>
 				</div>
 				<div class="row">
 					<div class="form-group col">
 						<label for="city">City</label>
-						<input type="text" name="city" placeholder="Enter city" class="form-control">
+						<input type="text" name="city" id="city" placeholder="Enter city" class="form-control">
 					</div>
 					<div class="form-group col">
 						<label for="state">State</label>
-						<select name="state" class="form-control">
+						<select name="state" id="state" class="form-control">
 							<option value="0">Select State</option>
 							<option value="Uttar Pradesh">Uttar Pradesh</option>
 						</select>
 					</div>
 				</div>
 				<div class="row">
+					<div class="form-group col">
+						<label for="landmark">Landmark (Optional) </label>
+						<input type="text" name="landmark" id="landmark" placeholder="Enter landmark" class="form-control">
+					</div>
+					<div class="form-group col">
+						<label for="alt_mobile">Alternate Mobile (Optional)</label>
+						<input type="text" name="alt_mobile" id="alt_mobile" placeholder="Enter alternate mobile" class="form-control">
+					</div>
+				</div>
+				<div class="row">
+					<div class="btn-group btn-group-toggle col-4 form-group" data-toggle="buttons">
+						<label class="btn btn-light active">
+							<input type="radio" name="type" value="Home" id="option1" checked> Home
+						</label>
+						<label class="btn btn-light">
+							<input type="radio" name="type" value="Work" id="option2"> Work
+						</label>
+					</div>
+				</div>
+				<div class="row">
 					<div class="d-flex form-group col">
 						<div class="btn btn-danger cancel_btn" style="margin-right: 10px;cursor: pointer;">Cancel</div>
-						<button class="btn btn-primary" type="submit">Add Address</button>
+						<button class="btn btn-primary submit_btn" type="submit">Add Address</button>
 					</div>
 				</div>
 			</form>
 		</div>
 		{% for add in address %}
-			<div class="card border-dark">
+			<div class="card border-dark" style="margin-bottom: 10px;">
 				<div class="row no-gutters">
 					<div class="col">
 						<div class="card-body">
@@ -76,7 +96,7 @@
 					</div>
 					<div class="col" style="display: flex;justify-content: center;align-items: flex-end;flex-direction: column;margin-right: 10px;">
 						<button class="btn btn-light" style="margin: 2px;">Edit</button>
-						<button class="btn btn-danger" style="margin: 2px;">Delete</button>
+						<button class="btn btn-danger" style="margin: 2px;"><a href="{% url 'deleteAddress' add.uid %}" style="color: #fff;:hover{color:white}">Delete</a></button>
 					</div>
 				</div>
 			</div>
@@ -85,6 +105,40 @@
 </section>
 
 <script>
+	function validateAddressForm(){
+		if($("#name").val() == ''){
+			$('#name').focus()
+			$('#name').attr('placeholder','Please enter name!')
+			return false;
+		}else if($('#mobile').val().length != 10){
+			$('#mobile').focus()
+			$('#mobile').val('')
+			$('#mobile').attr('placeholder','Please enter 10 digit mobile number!')
+			return false;
+		}else if($('#pincode').val().length != 6){
+			$('#pincode').focus()
+			$('#pincode').val('')
+			$('#pincode').attr('placeholder','Please enter valid pincode!')
+			return false;
+		}else if($('#locality').val() == ''){
+			$('#locality').focus()
+			$('#locality').attr('placeholder','Please enter locality')
+			return false;
+		}else if($("#area").val() == ''){
+			$('#area').focus()
+			$("#area").attr('placeholder','Please enter area!')
+			return false;
+		}else if($('#city').val() == ''){
+			$('#city').focus()
+			$('#city').attr('placeholder','Please enter city!')
+			return false;
+		}else if($('#state').val() == '0'){
+			$('#state').focus()
+			return false;
+		}else{
+			return true;
+		}
+	}
 	$('.add_btn').on('click',function(){
 		$('.form_div').toggleClass('hide');
 		$('.add_btn').toggleClass('hide');

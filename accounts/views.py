@@ -187,6 +187,35 @@ def addItemInWishlist(request,uid):
 
 def address(request):
     user = request.user
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        mobile = request.POST.get('mobile')
+        pincode = request.POST.get('pincode')
+        locality = request.POST.get('locality')
+        area = request.POST.get('area')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        landmark = request.POST.get('landmark')
+        alt_mobile = request.POST.get('alt_mobile')
+        if alt_mobile == '':
+            alt_mobile = None
+        type = request.POST.get('type')
+        try:
+            new_add = Address.objects.create(user=user,
+                                             name=name,
+                                             mobile=mobile,
+                                             pincode=pincode,
+                                             locality=locality,
+                                             area=area,
+                                             city=city,
+                                             state=state,
+                                             landmark=landmark,
+                                             altMobile=alt_mobile,
+                                             type=type)
+            new_add.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        except Exception as e:
+            return e
     addressArray = Address.objects.filter(user=user)
     address = []
     for add in addressArray:
@@ -195,6 +224,11 @@ def address(request):
     user = Profile.objects.get(user=user)
     context['cartItemTotal'] = user.cartItemTotal()
     return render(request,'accounts/address.html',context=context)
+
+def deleteAddress(request,uid):
+    address = Address.objects.get(uid=uid)
+    address.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def profile(request):
     user = request.user
