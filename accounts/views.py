@@ -7,6 +7,7 @@ from .models import Profile
 from products.models import *
 from accounts.models import Cart,CartItems,Wishlist,Address
 from django.contrib.auth.decorators import login_required
+import json
 # Create your views here.
 def login_page(request):
     if not request.user.is_authenticated:
@@ -229,6 +230,26 @@ def deleteAddress(request,uid):
     address = Address.objects.get(uid=uid)
     address.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def fetchAddress(request,uid):
+    address = Address.objects.get(uid=uid)
+    add = {'name':address.name,
+           'mobile':address.mobile,
+           'pincode':address.pincode,
+           'locality':address.locality,
+           'area':address.area,
+           'city':address.city,
+           'state':address.state,
+           'landmark':address.landmark,
+           'alt_mobile':address.altMobile,
+           'type':address.type}
+    return JsonResponse({"data":add},status=200)
+
+def editAddress(request,*args,**kwargs):
+    if request.method == 'POST':
+        name = request.POST.get('edit_name')
+        print(name)
+        return 'nunnu'
 
 def profile(request):
     user = request.user

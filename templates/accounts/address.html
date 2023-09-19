@@ -14,7 +14,7 @@
 		<hr style="margin: .5rem 0;">
 		<button class="add_btn btn btn-primary" style="margin: 5px 0;">+ Add Address</button>
 		<div class="form_div hide" style="width:80%;border: 1px solid rgba(0,0,0,0.1);padding: 5px 10px;margin: 5px 0;">
-			<p class="b" style="font-size: 18px;">Add Address</p>
+			<p class="b address_title" style="font-size: 18px;">Add Address</p>
 			<form method="post" onsubmit="return validateAddressForm()">
 				{% csrf_token %}
 				<div class="row">
@@ -68,8 +68,8 @@
 				</div>
 				<div class="row">
 					<div class="btn-group btn-group-toggle col-4 form-group" data-toggle="buttons">
-						<label class="btn btn-light active">
-							<input type="radio" name="type" value="Home" id="option1" checked> Home
+						<label class="btn btn-light">
+							<input type="radio" name="type" value="Home" id="option1"> Home
 						</label>
 						<label class="btn btn-light">
 							<input type="radio" name="type" value="Work" id="option2"> Work
@@ -84,8 +84,80 @@
 				</div>
 			</form>
 		</div>
+		<div class="editform_div hide" style="width:80%;border: 1px solid rgba(0,0,0,0.1);padding: 5px 10px;margin: 5px 0;">
+			<p class="b address_title" style="font-size: 18px;">Edit Address</p>
+			<form method="post" class="editform" onsubmit="return validateAddressForm()">
+				{% csrf_token %}
+				<div class="row">
+					<div class="form-group col">
+						<label for="name">Name</label>
+						<input type="text" name="edit_name" id="edit_name" placeholder="Full name" class="form-control">
+					</div>
+					<div class="form-group col">
+						<label for="mobile">Mobile Number</label>
+						<input type="text" name="edit_mobile" id="edit_mobile" maxlength="10" placeholder="10 digit Mobile Number" class="form-control">
+					</div>
+				</div>
+				<input type="hidden" name="id" id="id">
+				<div class="row">
+					<div class="form-group col">
+						<label for="pincode">Pincode</label>
+						<input type="text" name="edit_pincode" id="edit_pincode" maxlength="6" placeholder="Enter pincode" class="form-control">
+					</div>
+					<div class="form-group col">
+						<label for="locality">Locality</label>
+						<input type="text" name="edit_locality" id="edit_locality" placeholder="Enter locality" class="form-control">
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col">
+						<label for="area">Area</label>
+						<textarea name="edit_area" class="form-control" id="edit_area" placeholder="Enter area" cols="30" rows="2"></textarea>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col">
+						<label for="city">City</label>
+						<input type="text" name="edit_city" id="edit_city" placeholder="Enter city" class="form-control">
+					</div>
+					<div class="form-group col">
+						<label for="state">State</label>
+						<select name="edit_state" id="edit_state" class="form-control">
+							<option value="0">Select State</option>
+							<option value="Uttar Pradesh">Uttar Pradesh</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col">
+						<label for="landmark">Landmark (Optional) </label>
+						<input type="text" name="edit_landmark" id="edit_landmark" placeholder="Enter landmark" class="form-control">
+					</div>
+					<div class="form-group col">
+						<label for="alt_mobile">Alternate Mobile (Optional)</label>
+						<input type="text" name="edit_alt_mobile" id="edit_alt_mobile" placeholder="Enter alternate mobile" class="form-control">
+					</div>
+				</div>
+				<div class="row">
+					<div class="btn-group btn-group-toggle col-4 form-group" data-toggle="buttons">
+						<label class="btn btn-light">
+							<input type="radio" name="edit_type" value="Home" id="edit_option1"> Home
+						</label>
+						<label class="btn btn-light">
+							<input type="radio" name="edit_type" value="Work" id="edit_option2"> Work
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="d-flex form-group col">
+						<div class="btn btn-danger cancel_btn" style="margin-right: 10px;cursor: pointer;">Cancel</div>
+						<button class="btn btn-primary editform_btn" type="submit">Add Address</button>
+					</div>
+				</div>
+			</form>
+		</div>
 		{% for add in address %}
-			<div class="card border-dark" style="margin-bottom: 10px;">
+			<div class="card border-dark {{add.uid}} " style="margin-bottom: 10px;">
 				<div class="row no-gutters">
 					<div class="col">
 						<div class="card-body">
@@ -95,7 +167,7 @@
 						</div>
 					</div>
 					<div class="col" style="display: flex;justify-content: center;align-items: flex-end;flex-direction: column;margin-right: 10px;">
-						<button class="btn btn-light" style="margin: 2px;">Edit</button>
+						<button class="btn btn-light edit_btn" id="{{add.uid}}"  style="margin: 2px;">Edit</button>
 						<button class="btn btn-danger" style="margin: 2px;"><a href="{% url 'deleteAddress' add.uid %}" style="color: #fff;:hover{color:white}">Delete</a></button>
 					</div>
 				</div>
@@ -140,12 +212,67 @@
 		}
 	}
 	$('.add_btn').on('click',function(){
-		$('.form_div').toggleClass('hide');
-		$('.add_btn').toggleClass('hide');
+		let x = $('.form_div')
+		$(this).after(x)
+		$('.form_div').removeClass('hide');
+		$('.add_btn').addClass('hide');
+		$('.address_title').html('Add address')
 	})
 	$('.cancel_btn').on('click',function(){
-		$('.form_div').toggleClass('hide');
-		$('.add_btn').toggleClass('hide');
+		$('.form_div').addClass('hide');
+		$('.editform_div').addClass('hide');
+		$('.add_btn').removeClass('hide');
+		$('.card').removeClass('hide');
+	})
+	$('.edit_btn').on('click',function(){
+		var id = $(this).attr('id')
+		var y = $('#'+id).parent().parent().parent()
+		jQuery(y).before($('.editform_div'))
+		var url = '{% url "fetchAddress" 1 %}'.replace('1',id)
+		$.ajax({
+			type:'GET',
+			url:url,
+			success:function(e){
+				$('#id').val(id)
+				$('#edit_name').val(e.data.name)
+				$('#edit_mobile').val(e.data.mobile)
+				$('#edit_pincode').val(e.data.pincode)
+				$('#edit_locality').val(e.data.locality)
+				$('#edit_area').html(e.data.area)
+				$('#edit_city').val(e.data.city)
+				$('#edit_state').val(e.data.state)
+				if(e.data.landmark != null){
+					$('#edit_landmark').val(e.data.landmark)
+				}
+				if(e.data.alt_mobile != null){
+					$('#edit_alt_mobile').val(e.data.alt_mobile)
+				}
+				if (e.data.type == 'Work'){
+					$('#edit_option2').parent().addClass('active')
+					$('#edit_option1').parent().removeClass('active')
+					$('#edit_option2').prop('checked',true)
+				}else{
+					$('#edit_option1').parent().addClass('active')
+					$('#edit_option2').parent().removeClass('active')
+					$('#edit_option1').prop('checked',true)
+				}
+			}
+		})
+		$('.editform_div').removeClass('hide')
+		$('.add_btn').addClass('hide')
+		$(y).addClass('hide')
+	});
+	$('.editform_btn').on('click',function(e){
+		e.preventDefault()
+		console.log('ky bhai!')
+		$.ajax({
+			method:"POST",
+			url:'{% url "editAddress" %}',
+			data:$('.editform').serialize(),
+			success:function(res){
+				console.log(res)
+			}
+		})
 	})
 </script>
 {% endblock %}
