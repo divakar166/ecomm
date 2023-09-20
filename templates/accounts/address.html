@@ -98,7 +98,7 @@
 						<input type="text" name="edit_mobile" id="edit_mobile" maxlength="10" placeholder="10 digit Mobile Number" class="form-control">
 					</div>
 				</div>
-				<input type="hidden" name="id" id="id">
+				<input type="hidden" name="uid" id="id">
 				<div class="row">
 					<div class="form-group col">
 						<label for="pincode">Pincode</label>
@@ -264,13 +264,12 @@
 	});
 	$('.editform_btn').on('click',function(e){
 		e.preventDefault()
-		console.log('ky bhai!')
 		$.ajax({
 			method:"POST",
 			url:'{% url "editAddress" %}',
 			data:$('.editform').serialize(),
 			success:function(res){
-				console.log(res)
+				window.location.reload()
 			}
 		})
 	})

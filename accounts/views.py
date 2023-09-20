@@ -247,18 +247,24 @@ def fetchAddress(request,uid):
 
 def editAddress(request):
     if request.method == 'POST':
-        name = request.POST.get('edit_name')
-        mobile = request.POST.get('edit_mobile')
-        pincode = request.POST.get('edit_pincode')
-        locality = request.POST.get('edit_locality')
-        area = request.POST.get('edit_area')
-        city = request.POST.get('edit_city')
-        state = request.POST.get('edit_state')
-        landmark = request.POST.get('edit_landmark')
-        alt_mobile = request.POST.get('edit_alt_mobile')
-        type = request.POST.get('edit_type')
-        # add = Address.objects.update()
-        return JsonResponse({'data':[name,mobile,pincode,locality,area,city,state,landmark,alt_mobile,type]})
+        data = {
+            'name': request.POST.get('edit_name'),
+            'mobile' :request.POST.get('edit_mobile'),
+            'pincode' :request.POST.get('edit_pincode'),
+            'locality' :request.POST.get('edit_locality'),
+            'area' :request.POST.get('edit_area'),
+            'city' :request.POST.get('edit_city'),
+            'state' :request.POST.get('edit_state'),
+            'landmark' :request.POST.get('edit_landmark'),
+            'alt_mobile' :request.POST.get('edit_alt_mobile'),
+            'type' :request.POST.get('edit_type')
+        }
+        uid = request.POST.get('uid')
+        add = Address.objects.get(uid=uid)
+        for key, value in data.items():
+            setattr(add, key, value)
+        add.save()
+        return JsonResponse({'data':['success']})
 
 def profile(request):
     user = request.user
