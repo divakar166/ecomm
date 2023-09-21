@@ -20,6 +20,9 @@ urlpatterns = [
     path('fetchAddress/<uid>/',fetchAddress,name='fetchAddress'),
     path('editAddress/',editAddress,name='editAddress'),
     path('profile/',profile,name='profile'),
+    path('editPersonalDetails/',editPersonalDetails,name='editPersonalDetails'),
+    path('editEmail/',editEmail,name='editEmail'),
+    path('editMobile/',editMobile,name='editMobile'),
     path('orders/',orders,name='orders'),
     path('logout/',logout,name='logout')
 ]

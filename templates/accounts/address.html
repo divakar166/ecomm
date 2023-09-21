@@ -151,7 +151,7 @@
 				<div class="row">
 					<div class="d-flex form-group col">
 						<div class="btn btn-danger cancel_btn" style="margin-right: 10px;cursor: pointer;">Cancel</div>
-						<button class="btn btn-primary editform_btn" type="submit">Add Address</button>
+						<button class="btn btn-primary editform_btn" type="submit">Edit Address</button>
 					</div>
 				</div>
 			</form>
@@ -163,7 +163,7 @@
 						<div class="card-body">
 							<h5 class="card-title">{{add.name}}</h5>
 							<p class="card-subtitle text-muted">{{add.type}}</p>
-							<p class="card-text">{{add.area}}{% if add.Landmark %},{{add.Landmark}}{% endif %},{{add.city}},{{add.state}} - {{add.pincode}} <br> {{add.mobile}}</p>
+							<p class="card-text">{{add.area}}{% if add.landmark %}, {{add.landmark}}{% endif %}, {{add.locality}}, {{add.city}} <br> <span class="b">{{add.state}} - {{add.pincode}}</span> <br> {{add.mobile}}</p>
 						</div>
 					</div>
 					<div class="col" style="display: flex;justify-content: center;align-items: flex-end;flex-direction: column;margin-right: 10px;">

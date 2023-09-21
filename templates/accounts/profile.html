@@ -10,65 +10,154 @@
 		<div class="sidebar-item"><a href="{% url 'logout' %}">Logout</a></div>
 	</div>
 	<div class="container" style="margin: 2.5px;">
-		<div class="personal_div">
-			<div class="personal d-flex">
-				<div class="title" style="font-size: 20px;padding-right: 10px;">Personal Information</div>
-				<span style="color: #0000ff;padding-top: 5px;cursor: pointer;">Edit</span>
-			</div>
-			<div class="row" style="padding-top: 10px;">
-				<div class="col-3">
-					<input type="text" value="{{user.first_name}}" readonly class="form-control">
+		<form method="POST" id="personalForm">	
+			{% csrf_token %}
+			<div class="personal_div">
+				<div class="personal d-flex">
+					<div class="title" style="font-size: 20px;padding-right: 10px;">Personal Information</div>
+					<span style="color: #0000ff;padding-top: 5px;cursor: pointer;"onclick="personalEditBtn()">Edit</span>
 				</div>
-				<div class="col-3">
-					<input type="text" value="{{user.last_name}}" class="form-control" readonly>
+				<div class="row" style="padding-top: 10px;">
+					<div class="col-3">
+						<input type="text" id="first_name" name="first_name" value="{{user.first_name}}" readonly class="form-control">
+					</div>
+					<div class="col-3">
+						<input type="text" id="last_name" name="last_name" value="{{user.last_name}}" class="form-control" readonly>
+					</div>
+					<div class="col-3">
+						<input type="submit" class="btn btn-primary hide name_btn" value="Save">
+						<input type="button" class="btn btn-danger hide name_cancel_btn" onclick="personalCancelBtn()" value="Cancel">
+					</div>
 				</div>
-				<div class="col-3">
-					<input type="submit" hidden class="btn btn-primary" value="Save">
+				<div class="gender_div" style="padding: 10px 0;">
+					<div class="title">Your Gender</div>
 				</div>
-			</div>
-			<div class="gender_div" style="padding: 10px 0;">
-				<div class="title">Your Gender</div>
-			</div>
-			<div class="row">
-				<label for="male" style="padding: 0 10px;">
-					<input type="radio" name="gender" readonly id="Male" disabled {% if userData.gender == 'Male' %} checked {% else %} {%endif%}>
-					<span style="font-size: 16px;">Male</span>
-				</label>
-				<label for="female" style="padding: 0 10px;">
-					<input type="radio" name="gender" readonly id="Female" disabled {% if userData.gender == 'Female' %} checked {% else %} {%endif%}>
-					<span style="font-size: 16px;">Female</span>
-				</label>
-			</div>
-		</div>
-		<div class="email_div" style="padding-bottom: 10px;">
-			<div class="email d-flex">
-				<div class="title" style="font-size: 18px;padding-right: 10px;">Email Address</div>
-				<span style="color: #0000ff;padding-top: 3px;cursor: pointer;">Edit</span>
-			</div>
-			<div class="row">
-				<div class="col-3">
-					<input type="email" value="{{userData.user}}" readonly disabled class="form-control">
-				</div>
-				<div class="col-3">
-					<input type="submit" class="btn btn-primary" hidden value="Save">
+				<div class="row">
+					<label for="male" style="padding: 0 10px;">
+						<input type="radio" name="gender" value="Male" readonly id="Male" disabled {% if userData.gender == 'Male' %} checked {% else %} {%endif%}>
+						<span style="font-size: 16px;">Male</span>
+					</label>
+					<label for="female" style="padding: 0 10px;">
+						<input type="radio" name="gender" value="Female" readonly id="Female" disabled {% if userData.gender == 'Female' %} checked {% else %} {%endif%}>
+						<span style="font-size: 16px;">Female</span>
+					</label>
 				</div>
 			</div>
-		</div>
-		<div class="mobile_div">
-			<div class="mobile d-flex">
-				<div class="title" style="font-size: 18px;padding-right: 10px;">Mobile Number</div>
-				<span style="color: #0000ff;padding-top: 3px;cursor: pointer;">Edit</span>
-			</div>
-			<div class="row">
-				<div class="col-3">
-					<input type="text" value="{{userData.mobile}}" readonly disabled class="form-control">
+		</form>
+		<form id="emailForm" method="POST">
+			{% csrf_token %}
+			<div class="email_div" style="padding-bottom: 10px;">
+				<div class="email d-flex">
+					<div class="title" style="font-size: 18px;padding-right: 10px;">Email Address</div>
+					<span style="color: #0000ff;padding-top: 3px;cursor: pointer;" onclick="emailEditBtn()" >Edit</span>
 				</div>
-				<div class="col-3">
-					<input type="submit" class="btn btn-primary" hidden value="Save">
+				<div class="row">
+					<div class="col-3">
+						<input type="email" name="email" value="{{user.email}}" readonly class="form-control">
+					</div>
+					<div class="col-3">
+						<input type="submit" class="btn btn-primary email_submit_btn hide" value="Save">
+						<input type="button" class="btn btn-danger email_cancel_btn hide" onclick="emailCancelBtn()" value="Cancel">
+					</div>
 				</div>
 			</div>
-		</div>
+		</form>
+		
+		<form method="POST" id="mobileForm">
+			{% csrf_token %}
+			<div class="mobile_div">
+				<div class="mobile d-flex">
+					<div class="title" style="font-size: 18px;padding-right: 10px;">Mobile Number</div>
+					<span style="color: #0000ff;padding-top: 3px;cursor: pointer;" onclick="editMobileBtn()">Edit</span>
+				</div>
+				<div class="row">
+					<div class="col-3">
+						<input type="text" name="mobile" value="{{userData.mobile}}" readonly class="form-control">
+					</div>
+					<div class="col-3">
+						<input type="submit" class="btn btn-primary submitMobileBtn hide" value="Save">
+						<input type="button" class="btn btn-danger cancelMobileBtn hide" onclick="cancelMobileBtn()" value="Cancel">
+					</div>
+				</div>
+			</div>
+		</form>
 		
 	</div>
 </section>
+
+<script>
+	function personalEditBtn(){
+		$('input[name=first_name]').attr('readonly',false)
+		$('input[name=last_name]').attr('readonly',false)
+		$('input[name=gender]').attr('disabled',false)
+		$('.name_btn,.name_cancel_btn').removeClass('hide')
+	}
+	function personalCancelBtn(){
+			$('input[name=first_name]').attr('readonly',true)
+			$('input[name=last_name]').attr('readonly',true)
+			$('input[name=gender]').attr('disabled',true)
+			$('.name_btn,.name_cancel_btn').addClass('hide')
+	}
+	$('.name_btn').on('click',function(e){
+		e.preventDefault()
+		let data = $('#personalForm').serialize()
+		let url = '{% url "editPersonalDetails" %}'
+		$.ajax({
+			method:"POST",
+			data:data,
+			url:url,
+			success:function(e){
+				if (e.data == 'success'){
+					window.location.reload()
+				}
+			}
+		})
+	});
+	function emailEditBtn(){
+		$('input[name=email]').attr('readonly',false)
+		$('.email_submit_btn,.email_cancel_btn').removeClass('hide')
+	}
+	function emailCancelBtn(){
+		$('input[name=email]').attr('readonly',true)
+		$('.email_submit_btn,.email_cancel_btn').addClass('hide')
+	}
+	$('.email_submit_btn').on('click',function(e){
+		e.preventDefault()
+		let data = $('#emailForm').serialize()
+		let url = '{% url "editEmail" %}'
+		console.log(data)
+		$.ajax({
+			method:'POST',
+			data:data,
+			url:url,
+			success:function(res){
+				if(res.data == 'success'){
+					window.location.reload()
+				}
+			}
+		})
+	});
+	function editMobileBtn(){
+		$('input[name=mobile]').attr('readonly',false);
+		$('.submitMobileBtn,.cancelMobileBtn').removeClass('hide');
+	}
+	function cancelMobileBtn(){
+		$('input[name=mobile]').attr('readonly',true);
+		$('.submitMobileBtn,.cancelMobileBtn').addClass('hide');
+	}
+	$('.submitMobileBtn').on('click',function(e){
+		let data = $('#mobileForm').serialize()
+		let url = '{% url "editMobile" %}'
+		$.ajax({
+			method:"POST",
+			data:data,
+			url:url,
+			success:function(res){
+				if(res.data == 'success'){
+					window.location.reload()
+				}
+			}
+		})
+	})
+</script>
 {% endblock %}
