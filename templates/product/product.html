@@ -67,14 +67,15 @@
 												</div>
 												<input type="text" name="quantity" id="quantity_val" class="form-control" value="1">
 												<input type="hidden" name="uid" value="{{product.uid}}">
+												<input type="hidden" name="buy" value="False">
 												<div class="input-group-append">
-													<button class="btn btn-light" type="button" id="button-minus" onclick="subQuantityVal()"> − </button>
+													<button class="btn btn-light" type="button" id="button-minus" onclick="subQuantityVal()"> - </button>
 												</div>
 												</div>
-											</div> <!-- col.// -->
-										</div> <!-- row.// -->
+											</div>
+										</div>
 					
-									<a href="{% url 'checkout' product.uid %}" class="btn  btn-primary"> Buy now </a>
+									<button type="submit" onclick="changeBuy()" class="btn btn-primary buy_btn" style="margin-right: 5px;"> Buy now </a>
 									<button type="submit" class="btn  btn-outline-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
 									</form>
 								</article> <!-- product-info-aside .// -->
@@ -84,21 +85,23 @@
 	</div>
 </section>
 
-    <script>
-      function getCorrectPrice(size){
-        window.location.href = window.location.pathname + `?size=${size}`
-      }
-      function addQuantityVal(){
+<script>
+	function changeBuy(){
+		$('input[name=buy]').val('True')
+	}
+	function getCorrectPrice(size){
+		window.location.href = window.location.pathname + `?size=${size}`
+	}
+	function addQuantityVal(){
 		let val = $('#quantity_val').val()
 		$('#quantity_val').val(parseInt(val)+1)
-      }
-      function subQuantityVal(){
+	}
+	function subQuantityVal(){
 		let val = $('#quantity_val').val()
 		if (parseInt(val) > 1){
 			$('#quantity_val').val(parseInt(val)-1)
 		}
-				
-      }
-    </script>
+	}
+</script>
 
 {% endblock %}

@@ -1,16 +1,24 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from products.models import Product
 from accounts.models import Profile
 from accounts.views import addToCart,isItemInWishlist
-# Create your views here.
+from django.http import HttpResponseRedirect
+from order.views import checkout
 
 def getProducts(request,slug):
     try:
         product = Product.objects.get(slug=slug)
         context = {'product':product}
         if request.method=='POST':
+            buy = request.POST.get('buy')
             quantity = request.POST.get('quantity')
-            addToCart(request,product.uid,quantity)
+            if buy=='True':
+                return redirect('checkout',uid=product.uid,quantity=quantity)
+            elif buy=='False':
+                print('reloaded')
+                return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+            else:
+                addToCart(request,product.uid,quantity)
         if request.user.is_authenticated: 
             context['wishlist'] = isItemInWishlist(request,product.uid)
             user = Profile.objects.get(user=request.user)
