@@ -3,15 +3,18 @@ from products.models import Product,Coupon
 from .models import CheckoutCart
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from accounts.models import Address,Profile
 
 def checkout(request,uid,quantity):
   product = Product.objects.get(uid=uid)
+  userdata = Profile.objects.get(user=request.user)
   try:
     checkout = CheckoutCart.objects.get(user=request.user)
     if checkout.product != product:
       checkout.product = product
       checkout.price = product.price
       checkout.quantity = quantity
+      checkout.save()
     if request.method == 'POST':
       coupon = request.POST.get('coupon')
       coupon_obj = Coupon.objects.filter(coupon_code__icontains=coupon)
@@ -33,8 +36,11 @@ def checkout(request,uid,quantity):
       checkout.save()
       messages.success(request, "Applied Successfully!")
       return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-    
-    context = {'checkout':checkout}
+    addressArray = Address.objects.filter(user=request.user)
+    address = []
+    for add in addressArray:
+      address.append(add)
+    context = {'checkout':checkout,'address':address,'userdata':userdata}
     return render(request,'checkout/checkout.html',context=context)
   except Exception as e:
     print(e)
