@@ -40,13 +40,13 @@ def checkout(request,uid,quantity):
     address = []
     for add in addressArray:
       address.append(add)
-    context = {'checkout':checkout,'address':address,'userdata':userdata}
+    context = {'checkout':checkout,'address':address,'userdata':userdata,'product':product}
     return render(request,'checkout/checkout.html',context=context)
   except Exception as e:
     print(e)
   try:
     checkout = CheckoutCart.objects.create(user=request.user,product=product,price=product.price,quantity=quantity)
-    context = {'checkout':checkout}
+    context = {'checkout':checkout,'product':product}
     return render(request,'checkout/checkout.html',context=context)
   except Exception as e:
     print(e)

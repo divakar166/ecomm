@@ -47,7 +47,7 @@
 }
 .section-content.profile{
   display: flex !important;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .sidebar{
   width: 250px;
@@ -105,4 +105,9 @@ a:hover{
   justify-content: center;
   height: 20px;
   margin: 5px;
+}
+@media (min-width: 1500px){
+  .container {
+    max-width: 1340px;
+  }
 }
