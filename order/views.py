@@ -8,14 +8,11 @@ from accounts.models import Address,Profile
 def checkout(request,uid,quantity):
   product = Product.objects.get(uid=uid)
   userdata = Profile.objects.get(user=request.user)
-  try:
-    checkout = CheckoutCart.objects.get(user=request.user)
-    if checkout.product != product:
-      checkout.product = product
-      checkout.price = product.price
-      checkout.quantity = quantity
-      checkout.save()
-    if request.method == 'POST':
+
+
+  if request.method == 'POST':
+    try:
+      checkout = CheckoutCart.objects.get(user=request.user)
       coupon = request.POST.get('coupon')
       coupon_obj = Coupon.objects.filter(coupon_code__icontains=coupon)
       if not coupon_obj:
@@ -36,6 +33,17 @@ def checkout(request,uid,quantity):
       checkout.save()
       messages.success(request, "Applied Successfully!")
       return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+    except Exception as e:
+      print(e)
+
+
+  try:
+    checkout = CheckoutCart.objects.get(user=request.user)
+    checkout.product = product
+    checkout.price = product.price
+    checkout.quantity = quantity
+    checkout.save()
+    
     addressArray = Address.objects.filter(user=request.user)
     address = []
     for add in addressArray:
@@ -46,7 +54,11 @@ def checkout(request,uid,quantity):
     print(e)
   try:
     checkout = CheckoutCart.objects.create(user=request.user,product=product,price=product.price,quantity=quantity)
-    context = {'checkout':checkout,'product':product}
+    addressArray = Address.objects.filter(user=request.user)
+    address = []
+    for add in addressArray:
+      address.append(add)
+    context = {'checkout':checkout,'address':address,'userdata':userdata,'product':product}
     return render(request,'checkout/checkout.html',context=context)
   except Exception as e:
     print(e)

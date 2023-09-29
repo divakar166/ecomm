@@ -204,7 +204,19 @@
 	$('.deliver').on('click',function(e){
 		e.preventDefault()
 	})
-	
+	function changeBuy(){
+		$('input[name=buy]').val('True')
+	}
+	function addQuantityVal(){
+		let val = $('#quantity_val').val()
+		$('#quantity_val').val(parseInt(val)+1)
+	}
+	function subQuantityVal(){
+		let val = $('#quantity_val').val()
+		if (parseInt(val) > 1){
+			$('#quantity_val').val(parseInt(val)-1)
+		}
+	}
 </script>
 </body>
 </html>

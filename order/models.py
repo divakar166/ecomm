@@ -13,10 +13,10 @@ class CheckoutCart(BaseModel):
     is_paid = models.BooleanField(default=False)
 
     def checkout_total(self):
-        return self.price*self.quantity
+        return int(self.price)*int(self.quantity)
 
     def checkout_final_total(self):
-        value = self.price * self.quantity
+        value = int(self.price) * int(self.quantity)
         if self.coupon:
             return value - int(self.coupon.discount_price)
         return value
