@@ -11,8 +11,8 @@ def checkout(request,uid,quantity):
 
 
   if request.method == 'POST':
+    checkout = CheckoutCart.objects.get(user=request.user)
     if request.POST.get('coupon'):
-      checkout = CheckoutCart.objects.get(user=request.user)
       coupon = request.POST.get('coupon')
       coupon_obj = Coupon.objects.filter(coupon_code__icontains=coupon)
       if not coupon_obj:
@@ -34,7 +34,9 @@ def checkout(request,uid,quantity):
       messages.success(request, "Applied Successfully!")
       return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
     if request.POST.get('address'):
-      print('address')
+      add = request.POST.get('address')
+      checkout.address = Address.objects.get(uid=add)
+      checkout.save()
       return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
   checkout = CheckoutCart.objects.get(user=request.user)
@@ -47,6 +49,7 @@ def checkout(request,uid,quantity):
   address = []
   for add in addressArray:
     address.append(add)
+  print(checkout.address)
   context = {'checkout':checkout,'address':address,'userdata':userdata,'product':product}
   return render(request,'checkout/checkout.html',context=context)
 
