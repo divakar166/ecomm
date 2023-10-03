@@ -80,7 +80,7 @@
 													<div class="address">
 														<div class="top">{{x.name}} <span class="type">{{x.type}}</span> {{x.mobile}}</div>
 														<div class="mid">{{x.area}}, {{x.locality}}, {{x.city}}, {{x.state}} <span class="b">{{x.pincode}}</span></div>
-														<div class="bottom hide"><button class="btn btn-info deliver">Deliver Here</button></div>
+														<button class="btn btn-info" type="submit">Deliver Here</button>
 													</div>
 												</div>
 											</div>
@@ -101,27 +101,9 @@
 											<img src="/media/{{product.image}}" style="height: 100px;" alt="">
 										</div>
 										<div class="col-10">
-											<div class="product_name">{{product}}</div>
+											<div class="product_name b">{{product}}</div>
 											<div class="model">{{product.model}}</div>
-											<form method="post">
-												{% csrf_token %}
-												<div class="form-row">
-													<div class="form-group col-md flex-grow-0">
-														<label>Quantity</label>
-														<div class="input-group mb-3 input-spinner">
-														<div class="input-group-prepend">
-															<button class="btn btn-light" type="button" id="button-plus" onclick="addQuantityVal()"> + </button>
-														</div>
-														<input type="text" name="quantity" id="quantity_val" class="form-control" value="1">
-														<input type="hidden" name="uid" value="{{product.uid}}">
-														<input type="hidden" name="buy" value="False">
-														<div class="input-group-append">
-															<button class="btn btn-light" type="button" id="button-minus" onclick="subQuantityVal()"> - </button>
-														</div>
-														</div>
-													</div>
-												</div>
-											</form>
+											<div class="quantity">Quantity : {{ checkout.quantity }}</div>
 										</div>
 									</div>
 								</div>
