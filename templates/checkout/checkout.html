@@ -25,6 +25,16 @@
 			.active .card-header{
 				background: rgba(0,0,0,0.1);
 			}
+			.center{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.type{
+				border: 1px solid rgba(0,0,0,0.1);
+				padding: 2px;
+				border-radius: 5px;
+			}
 		</style>
 </head>
 <body>
@@ -56,19 +66,28 @@
 									<img src="/media/images/number-1.png" alt="">
 									<span>LOGIN</span>
 								</div>
-								<div class="card-body d-flex" style="justify-content: space-between;padding: .5rem !important;align-items: center;"> 
-									<div class="card-text">{{user.first_name}} {{user.last_name}} <span class="b">+91 {{userdata.mobile}}</span></div>
-									<button class="btn btn-light">Change</button>
+								<div class="card-body" style="padding: .5rem !important;">
+									<div class="row no-gutters" style="margin: 5px;margin-top: 0;cursor: pointer;" >
+										<div class="col-10 d-flex" style="align-items: center;">
+											<div class="address">
+												<div class="card-text">{{user.first_name}} {{user.last_name}} <span class="b">+91 {{userdata.mobile}}</span></div>
+											</div>
+										</div>
+										<div class="col center">
+											<div class="btn btn-light">Change</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="step2 step active">
+						<div class="step2 step">
 							<div class="card p-1">
 								<div class="card-header">
 									<img src="/media/images/number-2.png" alt="">
 									<span>DELIVERY ADDRESS</span>
 								</div>
-								<div class="card-body" style="padding: .5rem !important;">
+								{% if checkout.address == None %}
+								<div class="card-body selection_div" style="padding: .5rem !important;">
 									<form method="POST">
 										{% csrf_token %}
 										{% for x in address %}
@@ -87,9 +106,27 @@
 										{% endfor %}
 									</form>
 								</div>
+								{% else %}
+								<div class="card-body selected_div" style="padding: .5rem !important;">
+									<div class="row no-gutters" style="margin: 5px;" >
+										<div class="col-10 d-flex">
+											<div class="address">
+												<div class="top b">{{checkout.address.name}} <span class="type">{{checkout.address.type}}</span> </div>
+												<div class="mid">{{checkout.address.area}}, {{checkout.address.locality}}, {{checkout.address.city}}, {{checkout.address.state}} <span class="b">{{checkout.address.pincode}}</span></div>
+												<div class="bottom">
+													{{checkout.address.mobile}}
+												</div>
+											</div>
+										</div>
+										<div class="col center">
+											<a href="{% url 'removeAddressCheckout' checkout.uid %}" class="btn btn-light">Change</a>
+										</div>
+									</div>
+								</div>
+								{% endif %}
 							</div>
 						</div>
-						<div class="step3 step colla">
+						<div class="step3 step hide">
 							<div class="card p-1">
 								<div class="card-header">
 									<img src="/media/images/number-3.png" alt="">
@@ -97,31 +134,23 @@
 								</div>
 								<div class="card-body"> 
 									<div class="row">
-										<div class="col-2">
+										<div class="col-2 center" style="height: 100%;width:100%;">
 											<img src="/media/{{product.image}}" style="height: 100px;" alt="">
 										</div>
 										<div class="col-10">
 											<div class="product_name b">{{product}}</div>
 											<div class="model">{{product.model}}</div>
 											<div class="quantity">Quantity : {{ checkout.quantity }}</div>
+											<div class="price b">Price : {{checkout.price}}</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="step4 step collapse">
-							<div class="card p-1">
-								<div class="card-header">
-									<img src="/media/images/number-4.png" alt="">
-									<span>PAYMENT OPTIONS</span>
-								</div>
-								<div class="card-body">
-									
-								</div>
-							</div>
+						<div class="step4 step hide">
+							<div class="btn btn-primary" style="cursor: pointer;">Place Order <i class="fa fa-truck"></i></div>
 						</div>
 					</div>
-					{{data}}
 				</main>
 				<aside class="col-md-3">
 					<div class="card mb-3">
@@ -169,10 +198,6 @@
 						<dt>Total Amount</dt>
 						<dd class="text-right  h5"><strong>₹{{checkout.checkout_final_total}}</strong></dd>
 						</dl>
-						<hr>
-						<p class="text-center mb-3">
-							<a href="#" class="btn btn-primary float-md"> Place Order <i class="fa fa-chevron-right"></i> </a>
-						</p>	
 					</div> <!-- card-body.// -->
 				</div>
 				</aside>
@@ -199,6 +224,15 @@
 			$('#quantity_val').val(parseInt(val)-1)
 		}
 	}
+	$('.final_btn').on('click',function(){
+		$('.step4').addClass('center')
+	})
+	$(document).ready(function(){
+		if($('.selected_div')[0]){
+			$('.step3,.step4').removeClass('hide')
+			$('.step4').addClass('center')
+		}
+	})
 </script>
 </body>
 </html>

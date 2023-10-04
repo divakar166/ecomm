@@ -59,3 +59,9 @@ def removeCheckoutCoupon(request,uid):
   checkout.save()
   messages.warning(request, "Coupon Removed.")
   return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+def removeAddressCheckout(request,uid):
+  checkout = CheckoutCart.objects.get(uid=uid)
+  checkout.address = None
+  checkout.save()
+  return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
