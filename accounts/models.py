@@ -52,7 +52,6 @@ class Cart(BaseModel):
             return total - int(self.coupon.discount_price)
         return total
 
-
 class CartItems(BaseModel):
     cart = models.ForeignKey(Cart,on_delete=models.CASCADE,related_name='cartItems')
     product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True,blank=True)

@@ -14,9 +14,6 @@ def getProducts(request,slug):
             quantity = request.POST.get('quantity')
             if buy=='True':
                 return redirect('checkout',uid=product.uid,quantity=quantity)
-            elif buy=='False':
-                print('reloaded')
-                return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
             else:
                 addToCart(request,product.uid,quantity)
         if request.user.is_authenticated: 

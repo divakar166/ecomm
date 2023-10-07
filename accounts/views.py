@@ -7,7 +7,7 @@ from .models import Profile
 from products.models import *
 from accounts.models import Cart, CartItems, Wishlist, Address
 from django.contrib.auth.decorators import login_required
-
+from order.models import CartCheckout,CheckoutCart
 
 # Login View
 def login_page(request):
@@ -56,7 +56,7 @@ def register_page(request):
 			user_obj.set_password(password)
 			user_obj.save()
 			Wishlist.objects.create(user=user_obj)
-			Cart.objects.create(user=user_obj, is_paid=False)
+			Cart.objects.create(user=user_obj)
 			messages.success(request, "An email has been sent on your mail.")
 			return HttpResponseRedirect(request.path_info)
 

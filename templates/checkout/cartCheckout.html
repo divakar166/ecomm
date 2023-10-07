@@ -86,7 +86,7 @@
 									<img src="/media/images/number-2.png" alt="">
 									<span>DELIVERY ADDRESS</span>
 								</div>
-								{% if checkout.address == None %}
+								{% if cartCheckout.address == None %}
 								<div class="card-body selection_div" style="padding: .5rem !important;">
 									<form method="POST">
 										{% csrf_token %}
@@ -111,15 +111,15 @@
 									<div class="row no-gutters" style="margin: 5px;" >
 										<div class="col-10 d-flex">
 											<div class="address">
-												<div class="top b">{{checkout.address.name}} <span class="type">{{checkout.address.type}}</span> </div>
-												<div class="mid">{{checkout.address.area}}, {{checkout.address.locality}}, {{checkout.address.city}}, {{checkout.address.state}} <span class="b">{{checkout.address.pincode}}</span></div>
+												<div class="top b">{{cartCheckout.address.name}} <span class="type">{{cartCheckout.address.type}}</span> </div>
+												<div class="mid">{{cartCheckout.address.area}}, {{cartCheckout.address.locality}}, {{cartCheckout.address.city}}, {{cartCheckout.address.state}} <span class="b">{{cartCheckout.address.pincode}}</span></div>
 												<div class="bottom">
-													{{checkout.address.mobile}}
+													{{cartCheckout.address.mobile}}
 												</div>
 											</div>
 										</div>
 										<div class="col center">
-											<a href="{% url 'removeAddressCheckout' checkout.uid %}" class="btn btn-light">Change</a>
+											<a href="{% url 'removeAddressCheckout' cartCheckout.uid %}" class="btn btn-light">Change</a>
 										</div>
 									</div>
 								</div>
@@ -132,19 +132,21 @@
 									<img src="/media/images/number-3.png" alt="">
 									<span>PRODUCT DETAILS</span>
 								</div>
+								{% for x in cartCheckout.product.all %}
 								<div class="card-body"> 
 									<div class="row">
 										<div class="col-2 center" style="height: 100%;width:100%;">
-											<img src="/media/{{product.image}}" style="height: 100px;" alt="">
+											<img src="/media/{{x.image}}" style="height: 100px;" alt="">
 										</div>
 										<div class="col-10">
-											<div class="product_name b">{{product}}</div>
-											<div class="model">{{product.model}}</div>
-											<div class="quantity">Quantity : {{ checkout.quantity }}</div>
-											<div class="price b">Price : {{checkout.price}}</div>
+											<div class="product_name b">{{x}}</div>
+											<div class="model">{{x.model}}</div>
+											<div class="quantity">Quantity : {% for key,val in dict.items %} {% if key == x %} {{val}} {% endif %} {% endfor %}</div>
+											<div class="price b">Price : {{ x.price }}</div>
 										</div>
 									</div>
 								</div>
+								{% endfor %}
 							</div>
 						</div>
 						<div class="step4 step hide">
@@ -167,8 +169,8 @@
 									</span>
 								</div>
 							</div>
-							{% if checkout.coupon %}
-							<a href="{% url 'removeCheckoutCoupon' %}" class="btn btn-success">{{ checkout.coupon.coupon_code }}</a>
+							{% if cartCheckout.coupon %}
+							<a href="{% url 'removeCartCheckoutCoupon' %}" class="btn btn-success">{{ cartCheckout.coupon.coupon_code }}</a>
 							{% endif %}
 						</form>
 						</div> <!-- card-body.// -->
@@ -177,12 +179,12 @@
 					<div class="card-body">
 						<dl class="dlist-align">
 						<dt>Price</dt>
-						<dd class="text-right">₹{{ checkout.checkout_total}}</dd>
+						<dd class="text-right">₹{{ cartCheckout.total }}</dd>
 						</dl>
-						{% if checkout.coupon %}
+						{% if cartCheckout.coupon %}
 							<dl class="dlist-align">
 								<dt>Discount</dt>
-								<dd class="text-right">- ₹{{checkout.coupon.discount_price}}</dd>
+								<dd class="text-right">- ₹{{cartCheckout.coupon.discount_price}}</dd>
 							</dl>
 						{% else %}
 							<dl class="dlist-align">
@@ -196,7 +198,7 @@
 						</dl>
 						<dl class="dlist-align">
 						<dt>Total Amount</dt>
-						<dd class="text-right  h5"><strong>₹{{checkout.checkout_final_total}}</strong></dd>
+						<dd class="text-right  h5"><strong>₹{{cartCheckout.final_total}}</strong></dd>
 						</dl>
 					</div> <!-- card-body.// -->
 				</div>
