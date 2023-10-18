@@ -15,7 +15,8 @@ def getProducts(request,slug):
             if buy=='True':
                 return redirect('checkout',uid=product.uid,quantity=quantity)
             else:
-                addToCart(request,product.uid,quantity)
+                return redirect('addToCart',uid=product.uid,quantity=quantity)
+                
         if request.user.is_authenticated: 
             context['wishlist'] = isItemInWishlist(request,product.uid)
             user = Profile.objects.get(user=request.user)

@@ -199,6 +199,7 @@ def isItemInWishlist(request, uid):
     return False
 
 
+@login_required(login_url="/accounts/login/")
 def addItemInWishlist(request, uid):
     user = request.user
     wishlist = Wishlist.objects.get(user=user)

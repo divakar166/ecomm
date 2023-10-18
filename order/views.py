@@ -4,9 +4,11 @@ from .models import CheckoutCart,CartCheckout
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from accounts.models import Address,Profile,Cart,CartItems
+from django.contrib.auth.decorators import login_required
 
 # Checkout Views
 
+@login_required(login_url="/accounts/login/")
 def checkout(request,uid,quantity):
   product = Product.objects.get(uid=uid)
   userdata = Profile.objects.get(user=request.user)

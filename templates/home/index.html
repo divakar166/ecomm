@@ -6,8 +6,10 @@
 
         {% for product in products %}
         <div class="col-md-3">
-            <figure class="card card-product-grid">
-                <div class="img-wrap"> <img src="/media/{{product.image}}"> </div>
+            <figure class="card card-product-grid" style="height: 300px;">
+                <div class="img-wrap d-flex" style="justify-content: center;align-items: center;"> 
+                    <img src="/media/{{product.image}}" style="height: 150px;">
+                </div>
                 <figcaption class="info-wrap border-top">
                     <a href="{% url 'getProduct' product.slug %}" class="title"><b>{{product.product_name}}</b></a>
                     <div class="price mt-2">₹{{product.price}}</div> <!-- price-wrap.// -->
