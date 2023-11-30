@@ -90,6 +90,9 @@
 								<div class="card-body selection_div" style="padding: .5rem !important;">
 									<form method="POST">
 										{% csrf_token %}
+										{% if not address %}
+											<a href="{% url 'address' %}" class="btn btn-primary">Add Delivery Address</a>
+										{% endif %}
 										{% for x in address %}
 											<div class="row no-gutters" onclick="select('{{x.uid}}')" style="margin: 5px;margin-top: 0;cursor: pointer;" >
 												<div class="col d-flex">
@@ -148,7 +151,7 @@
 							</div>
 						</div>
 						<div class="step4 step hide">
-							<div class="btn btn-primary" style="cursor: pointer;">Place Order <i class="fa fa-truck"></i></div>
+							<a href="#" class="btn btn-primary">Place Order <i class="fa fa-truck"></i></a>
 						</div>
 					</div>
 				</main>

@@ -158,11 +158,6 @@ def removeCoupon(request, uid):
     messages.warning(request, "Coupon Removed.")
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-
-def myaccount(request):
-    return render(request, "accounts/myaccount.html")
-
-
 # Wishlist Views
 
 
@@ -331,14 +326,6 @@ def editMobile(request):
 		user.save()
 		return JsonResponse({"data": "success"})
 
-def logout(request):
-    return HttpResponse("Logging Out!")
-
-
-# Orders Views
-def orders(request):
-    user = request.user
-    context = {"user": request.user}
-    user = Profile.objects.get(user=request.user)
-    context["cartItemTotal"] = user.cartItemTotal()
-    return render(request, "accounts/orders.html", context=context)
+def logoutview(request):
+    logout(request)
+    return redirect('/')

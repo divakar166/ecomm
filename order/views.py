@@ -132,3 +132,6 @@ def removeCartCheckoutCoupon(request):
   checkout.save()
   messages.warning(request, "Coupon Removed.")
   return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+def checkoutOrder(request,uid):
+  return render(request,'checkout/payment.html')

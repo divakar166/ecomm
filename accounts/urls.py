@@ -14,7 +14,6 @@ urlpatterns = [
     path('wishlist/',wishlist,name='wishlist'),
     path('wishItemRemove/<uid>/',wishlistRemove,name='wishlistRemove'),
     path('addItemInWishlist/<uid>/',addItemInWishlist,name='addItemInWishlist'),
-    path('myaccount/',myaccount,name='myaccount'),
     path('address/',address,name='address'),
     path('deleteAddress/<uid>/',deleteAddress,name='deleteAddress'),
     path('fetchAddress/<uid>/',fetchAddress,name='fetchAddress'),
@@ -23,6 +22,5 @@ urlpatterns = [
     path('editPersonalDetails/',editPersonalDetails,name='editPersonalDetails'),
     path('editEmail/',editEmail,name='editEmail'),
     path('editMobile/',editMobile,name='editMobile'),
-    path('orders/',orders,name='orders'),
-    path('logout/',logout,name='logout')
+    path('logout/',logoutview,name='logout')
 ]

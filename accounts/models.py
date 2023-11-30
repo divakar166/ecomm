@@ -12,13 +12,16 @@ class Profile(BaseModel):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile")
     isEmailVerified = models.BooleanField(default=False)
     emailToken = models.CharField(max_length=100,null=True,blank=True)
-    mobile = models.IntegerField(null=True)
+    mobile = models.IntegerField(null=True,blank=True)
     profile_image = models.ImageField(upload_to="profile",blank=True)
     gender = models.CharField(max_length=10,blank=True)
 
     def cartItemTotal(self):
         cart = Cart.objects.get(user=self.user,is_paid=False)
         return CartItems.objects.filter(cart=cart).count
+    
+    def __str__(self):
+        return str(self.user)
     
 class Address(BaseModel):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='address')
